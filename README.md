@@ -1,5 +1,3 @@
-# Automated-protein-ligand-interaction-pipeline
-
 # 🔬 Automated Protein–Ligand Docking & Interaction Analysis Pipeline
 
 ## 📌 Project Overview
@@ -60,7 +58,7 @@ PLIP Interaction Analysis
 ├── 1vsn.pdb                  # Receptor protein taken in this study from RCSB PDB
 ├── ligands_folder/           # Multiple ligand SDF files from Pubchem
 ├── dock_run_multiple.sh      # Docking automation script
-├── int_pipeline.py           # Interaction & visualization script
+├── interaction_pipeline.py           # Interaction & visualization script
 └── analysis_<ligand_name>/   # Auto-generated output folders
 ```
 
