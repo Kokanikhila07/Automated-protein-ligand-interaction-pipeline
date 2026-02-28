@@ -212,6 +212,5 @@ This pipeline demonstrates:
 
 # 👩‍💻 Author
 
-**Koka Nikhila Bhavani**
-Bioinformatician
+**Koka Nikhila Bhavani** | Bioinformatician
 
