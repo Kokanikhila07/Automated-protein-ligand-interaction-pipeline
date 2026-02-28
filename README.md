@@ -1,74 +1,219 @@
 # Automated-protein-ligand-interaction-pipeline
 
-Automated Protein-Ligand Docking & Interaction Pipeline
-This repository contains a high-throughput pipeline designed to automate the process of docking multiple ligands into a protein receptor and performing detailed 2D and 3D interaction analysis.
+# 🔬 Automated Protein–Ligand Docking & Interaction Analysis Pipeline
 
-🚀 Overview
-The pipeline automates the following steps:
+## 📌 Project Overview
 
-Receptor Preparation: Converts the protein PDB into PDBQT format using Open Babel.
+This project is an **automated end-to-end molecular docking and interaction analysis pipeline** designed to:
 
-Ligand Preparation: Batch processes .sdf files into Vina-compatible .pdbqt files using meeko.
+* Dock multiple ligands against a target protein
+* Extract the best binding pose
+* Generate protein–ligand complex structures
+* Perform interaction analysis
+* Automatically generate:
 
-Molecular Docking: Runs AutoDock Vina to find the optimal binding poses.
+  * ✅ 2D hydrogen bond interaction network
+  * ✅ 3D interactive visualization (HTML)
+  * ✅ PLIP reports (XML, TXT)
+  * ✅ Organized output folders
 
-Complex Assembly: Merges the best docking pose with the receptor for analysis.
+The pipeline integrates:
 
-Interaction Mapping: Uses PLIP (Protein-Ligand Interaction Profiler) to identify chemical bonds.
+* **AutoDock Vina**
+* **Open Babel**
+* **PLIP**
+* **RDKit**
+* **Meeko**
+* **py3Dmol**
+* **NetworkX**
 
-Visualization: Generates a 2D Hydrogen Bond Network (NetworkX) and an Interactive 3D View (py3Dmol).
+---
 
-🛠️ Prerequisites
-Ensure you have the following tools installed on your system:
+# 🧠 Workflow Architecture
 
-Software
-AutoDock Vina: For the docking engine.
+```
+Protein (PDB)
+      ↓
+Receptor Preparation (PDB → PDBQT)
+      ↓
+Multiple Ligands (.sdf)
+      ↓
+Ligand Preparation (Meeko)
+      ↓
+AutoDock Vina Docking
+      ↓
+Best Pose Extraction
+      ↓
+Complex Generation
+      ↓
+PLIP Interaction Analysis
+      ↓
+2D Network + 3D HTML Visualization + Reports
+```
 
-Open Babel: For chemical file format conversion.
+---
 
-PLIP: Protein-Ligand Interaction Profiler.
+# 📂 Project Structure
 
-Python Dependencies
-Bash
-pip install rdkit meeko py3Dmol networkx matplotlib
-📂 File Structure
-dock_run_multiple.sh: The master bash script that orchestrates the docking loop.
+```
+.
+├── 1vsn.pdb                  # Receptor protein taken in this study from RCSB PDB
+├── ligands_folder/           # Multiple ligand SDF files from Pubchem
+├── dock_run_multiple.sh      # Docking automation script
+├── int_pipeline.py           # Interaction & visualization script
+└── analysis_<ligand_name>/   # Auto-generated output folders
+```
 
-int_pipeline.py: Python script for interaction analysis and visualization.
+---
 
-1vsn.pdb: Your target protein (Receptor).
+# ⚙️ Features
 
-ligands_folder/: Directory containing all candidate ligands in .sdf format.
+## 1️⃣ Automated Multi-Ligand Docking
 
-📖 Usage Instructions
-1. Configure the Grid Box
-Open dock_run_multiple.sh and update the center and size coordinates to match your protein's active site:
+* Loops through all `.sdf` files
+* Converts to `.pdbqt`
+* Performs docking using AutoDock Vina
+* Extracts best binding pose (Pose 1)
 
-Bash
-CENTER_X=2.3
-CENTER_Y=25.9
-CENTER_Z=0.5
-SIZE_X=20.0
-SIZE_Y=20.0
-SIZE_Z=20.0
-2. Run the Pipeline
-Give execution permissions to the script and run it:
+## 2️⃣ Complex Generation
 
-Bash
+* Merges protein + docked ligand
+* Creates temporary complex structure
+* Ready for interaction profiling
+
+## 3️⃣ Interaction Analysis
+
+Using PLIP engine:
+
+* Hydrogen bonds
+* Hydrophobic interactions
+* Salt bridges
+* π-Stacking
+* Water bridges
+
+## 4️⃣ Custom 2D Hydrogen Bond Network
+
+* Parses PLIP XML output
+* Generates circular interaction map
+* Ligand: Central yellow node
+* Residues: Green-bordered nodes
+* Hydrogen bonds: Blue dashed edges
+* Saved as high-resolution PNG (300 dpi)
+
+## 5️⃣ Interactive 3D Visualization
+
+* Cartoon protein structure
+* Stick & sphere ligand representation
+* Van der Waals surface
+* Exported as interactive HTML file
+
+---
+
+# 📊 Output Example
+
+For each ligand:
+
+```
+analysis_LIG1/
+│
+├── report.xml
+├── report.txt
+├── LIG1_HBOND_network.png
+├── LIG1_3D.html
+└── additional PLIP files
+```
+
+---
+
+# 🧪 Example Use Case
+
+Protein: `1vsn.pdb`
+Ligands: Multiple drug candidates in SDF format
+
+This pipeline enables:
+
+* Virtual screening
+* Binding interaction validation
+* Drug repurposing studies
+* Structure-based drug design analysis
+
+---
+
+# 🚀 How to Run
+
+## Step 1: Install Dependencies
+
+```bash
+conda install -c conda-forge openbabel
+conda install -c conda-forge plip
+pip install rdkit networkx matplotlib py3Dmol meeko
+```
+
+Install AutoDock Vina separately.
+
+---
+
+## Step 2: Edit Grid Box Coordinates
+
+In `dock_run_multiple.sh`, modify:
+
+```
+CENTER_X
+CENTER_Y
+CENTER_Z
+SIZE_X
+SIZE_Y
+SIZE_Z
+```
+
+---
+
+## Step 3: Run the Pipeline
+
+```bash
 chmod +x dock_run_multiple.sh
 ./dock_run_multiple.sh
-📊 Outputs
-For every ligand in your folder, the script creates an analysis_[LigandName]_complex/ directory containing:
+```
 
-report.xml: Raw PLIP interaction data.
+---
 
-[Ligand]_HBOND_network.png: A 2D circular map of hydrogen bonds between the ligand and specific residues.
+# 🧬 Scientific Significance
 
-[Ligand]_3D.html: An interactive 3D visualization of the binding site with a VDW surface.
+This pipeline demonstrates:
 
-🧠 Technical Details
-Connectivity Correction
-The pipeline uses RDKit to sanitize PDB files. This prevents the "tangled lines" effect often seen in PDB exports by correctly perceiving bond orders before analysis.
+* Structure-Based Drug Design (SBDD)
+* Molecular docking automation
+* Interaction network modeling
+* Reproducible computational workflows
+* Integration of cheminformatics and structural bioinformatics
 
-Hydrogen Bond Mapping
-The 2D network strictly maps residues involved in hydrogen bonding to the central ligand, providing a clean, high-contrast visualization for publications.
+---
+
+# 💡 Skills Demonstrated
+
+* Molecular docking automation
+* Bash scripting
+* Python pipeline development
+* XML parsing
+* Graph-based interaction modeling
+* 3D molecular visualization
+* RDKit bond perception correction
+* Workflow optimization
+
+---
+
+# 🔮 Future Improvements
+
+* Add binding affinity ranking summary CSV
+* Add heatmap of interaction frequencies
+* Parallel docking execution
+* Integration with molecular dynamics (e.g., GROMACS)
+* Web-based dashboard interface
+
+---
+
+# 👩‍💻 Author
+
+**Koka Nikhila Bhavani**
+Bioinformatician
+
