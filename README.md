@@ -40,7 +40,7 @@ The pipeline is scalable and designed for **multi-ligand virtual screening**.
 # 📂 Project Structure
 
 ```bash
-.
+
 ├── inputs/
 │   ├── ligands_folder/
 │   │   ├── 444795.sdf
@@ -257,6 +257,5 @@ The pipeline successfully:
 
 # 👩‍💻 Author
 
-**Koka Nikhila Bhavani**
-Bioinformatician
+**Koka Nikhila Bhavani** | Bioinformatician
 
